@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Author-Details</title>
+    <link rel="stylesheet" href="./bootstarp/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/froala_editor.pkgd.min.css">
+    <link rel="shortcut icon" href="./uploads/draw.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">NoteBook</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./dashboard.html">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./note.html">Your Notes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="./author.html">About(Author)</a>
+          </li>
+          <li class="nav-item" id="cool-nav">
+            <a class="nav-link" href="">Login</a>
+          </li>
+        </ul>
+     
+      </div>
+    </div>
+  </nav>
+      <div class="text-end head "><button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" id="edit">Edit</button></div>
+      
+      <div class="logo text-center container boxs">
+        <div class="row">
+            <div class="col-md-12 mb-5 logo-proflie">
+                <img src="./uploads/Unknown_person.jpg" alt="author" height="100" width="100" class="author img-fluid" id="avatar"><br><br>
+               <h1 id="h">Name:</h1> <span class="text-center author_name" contenteditable="false">Author's name</span> <br> <br>
+               <!-- <br> -->
+               <h1 id="h">Bio:</h1> <div class="text-center author_bio d-i mb-3" contenteditable="false">Author's Bio</div> 
+            </div>
+        </div>
+
+      </div>
+     
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form>
+                
+                <div class="mb-3">
+                  <label for="message-text" class="col-form-label">Author's Bio:</label>
+                  <textarea class="form-control" id="message-text" placeholder="Author's Bio"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-success" onclick="save()">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</body>
+
+<script>
+  let avatar=document.querySelector('#avatar')
+  let author_name=document.querySelector('.author_name')
+  let author_bio=document.querySelector('.author_bio')
+  let head=document.querySelector('.head')
+  let edit=document.querySelector("#edit")
+  const exampleModal = document.getElementById('exampleModal')
+
+</script>
+<script src="./js/fetch.js"></script>
+<script src="./bootstarp/bootstrap.bundle.min.js"></script>
+<script src="./bootstarp/popper.min.js"></script>
+<script src="froala_editor.pkgd.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script>
+
+
+function getCookie(cookieName) {
+    // Split all cookies into an array
+    const cookies = document.cookie.split(';');
+    // Loop through each cookie
+    for (let i = 0; i < cookies.length; i++) {
+        // Split the cookie into name and value pairs
+        const cookie = cookies[i].trim().split('=');
+        // Check if the cookie name matches the provided name
+        if (cookie[0] === cookieName) {
+            // Return the cookie value
+            return decodeURIComponent(cookie[1]);
+        }
+    }
+  }
+async function postFetch(url = "", data = {}) {
+  try {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+    let res=await response.json(); // parses JSON response into native JavaScript objects
+  return res
+  } catch (error) {
+    return "get an error! 👎";
+  }
+};
+function elem2(url,name,bio){
+avatar.src=url;
+author_name.innerHTML=name
+if(bio.length!=0 ||bio==undefined){
+  author_bio.innerHTML=bio
+}
+
+}
+let result=postFetch('http://localhost:8000/author-details',{token:getCookie('token')})
+result.then(dat=>{
+  console.log(dat);
+  if(dat.length!=0){
+    elem2(dat[0].avatar,dat[0].username,dat[0].bio);
+  }
+  else{
+    window.location.href="./login.html"
+  }
+ 
+})
+// let data=[]
+if (exampleModal) {
+  exampleModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    // Extract info from data-bs-* attributes
+    const recipient = button.getAttribute('data-bs-whatever')
+    // If necessary, you could initiate an Ajax request here
+    // and then do the updating in a callback.
+
+    // Update the modal's content.
+    const modalTitle = exampleModal.querySelector('.modal-title')
+    const modalBodyInput = exampleModal.querySelector('.modal-body input')
+
+    modalTitle.textContent = `Edit this Author Details:`
+
+  })
+}
+async function postFetch23(url = "", data = {}) {
+  try {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+    let res=await response.json(); // parses JSON response into native JavaScript objects
+ res=Number(res.code)
+ if(res==200){
+  window.location.reload()
+ }
+  } catch (error) {
+    return "get an error! 👎";
+  }
+};
+let save =()=>{
+  console.log('hi');
+
+  const modalBodyInput = exampleModal.querySelector('#message-text')
+  
+let payload={
+  token:getCookie('token'),
+  bio:modalBodyInput.value
+}
+console.log(payload);
+postFetch23('http://localhost:8000/author-details-update',payload)
+}
+function delete_cookie(name) {
+  document.cookie = name +'='+"/";
+}
+let nav1_a=document.querySelector('#cool-nav a')
+let check_user=async (token)=>{
+    try {
+    // Default options are marked with *
+    const response = await fetch('http://localhost:8000/token-verfiy', {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify({token}), // body data type must match "Content-Type" header
+    });
+  let data= response.json(); // parses JSON response into native JavaScript objects
+    data.then(dat=>{
+      if(!dat){
+window.location.href='./login.html'
+      }
+    else{
+nav1_a.innerHTML="Log Out"
+    }
+    })
+
+  } catch (error) {
+    return "get a error! 👎";
+  }
+  }
+  check_user(getCookie('token'))
+
+nav1_a.addEventListener("click",()=>{
+  delete_cookie('token')
+})
+</script>
+</html>

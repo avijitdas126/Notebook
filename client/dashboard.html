@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="./bootstarp/bootstrap.min.css">
+    <link rel="shortcut icon" href="./uploads/draw.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">NoteBook</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./note.html">Your Notes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./author.html">About(Author)</a>
+            </li>
+            <li class="nav-item " id="cool-nav">
+              <a class="nav-link" href="">Login</a>
+            </li>
+          </ul>
+       
+        </div>
+      </div>
+    </nav>
+
+    
+    <section>
+      <h2 style="background: #ffffffed;
+      padding: 10px; margin: 20px 24px 20px 24px; border-radius: 20px;">Add New Note</h2>
+      <div class="model">
+        <div class="card">
+          <div class="box">
+          <img src="https://svgsilh.com/svg/31226.svg" alt=""></div>
+          <h2>Edit</h2>
+        <form action="">
+          <label for="Title">Title</label>
+          <input type="text" placeholder="Add title" id="title1"  /><br />
+          <label for="Description" id="ad">Description</label>
+          <textarea id="editor" placeholder="Add Note Here"></textarea>
+          <input type="button" value="Edit" id="Edit" class="edit" />
+        </div>
+        </form>
+      </div>
+      <div class="card">
+        <form action="">
+          <label for="Title">Title</label>
+          <input type="text" placeholder="Add title" id="title" /><br />
+          <label for="Description" id="ad">Description</label>
+          <textarea id="editor1">
+        </textarea>
+       
+        <div class="d-flex gap-3">
+          <input type="button" value="Reset"  class="reset btn btn-outline-primary"/>
+          <input type="button" value="Add Note" id="Open" class="add" />
+        </div>
+        </form>
+        
+      </div>
+    </section>
+
+    <h3 id="lat" style="background: #ffffffb0;
+    padding: 10px; margin: 20px 24px 20px 24px; border-radius: 20px;">Latest Notes</h3>
+    <div class="latest"></div>
+    
+      <center>
+       <a href="./note.html" id="num1" > <button class="btn btn-primary mt-3 mb-4" id="num">More Notes</button></a>
+      </center>
+      
+    
+    <script src="./js/fetch.js"></script>
+    <script src="./bootstarp/bootstrap.bundle.min.js"></script>
+    <script src="./bootstarp/popper.min.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script>
+
+    </script>
+    <script src="./js/script.js"></script>
+
+  </body>
+</html>

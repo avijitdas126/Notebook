@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstarp/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/froala_editor.pkgd.min.css">
+    <link rel="shortcut icon" href="./uploads/draw.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Signup Here</title>
+</head>
+<body>
+  <div class="alert alert-danger m-3" style="display:none ;"   id="albox" role="alert">
+    Username is already exists! Choose another username  <svg width="20" class="close" style="float: right;cursor: pointer;" height="20" viewBox="0 0 20 20"><path d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </div>
+  <div class="alert alert-success m-3" style="display:none ;"   id="subox" role="alert">
+    Login Successfully <svg width="20" class="close1" style="float: right;cursor: pointer;" height="20" viewBox="0 0 20 20"><path d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </div>
+  
+    <div class="container p-4 bgai">
+        <form>
+            <h2 class="text-center">Signup</h2>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">User name</label>
+              <input class="form-control" type="text" placeholder="UserName" aria-label="default input example" id="username" required>
+              </div>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="inputPassword6" class="col-form-label">Password</label>
+                </div>
+                <div class="col-auto">
+                  <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" required>
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Must be 4 characters long.
+                  </span>
+                </div>
+<input type="submit" value="Submit" class="btn btn-primary mb-3" id="submit">
+<h6 class="text-center">Have an Account? <a href="./login.html">Login Here</a></h6>        
+</form>
+        
+          </div>
+    </div>
+    <div class="modal12 d-none" id="process">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div> Processing ......
+     </div>
+    <script src="./jquery.min.js"></script>
+    <script src="./script.js"></script>
+    <script src="./bootstarp/bootstrap.bundle.min.js"></script>
+    <script src="./bootstarp/popper.min.js"></script>
+<script>
+let msg=document.querySelector('#passwordHelpInline')
+let submit=document.querySelector('#submit')
+submit.addEventListener('click',(e)=>{
+e.preventDefault()
+let password=document.querySelector('#inputPassword6').value;
+let username=document.querySelector('#username').value
+let email=document.querySelector('#exampleFormControlInput1').value
+let bol123=0;
+let avatar=[
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Dusty",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Bandit",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Sam",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Midnight",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Annie",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Gizmo",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Chester",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Harley",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Boots",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Bella",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Tigger",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Tiger",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Mia",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Oliver",
+    "https://api.dicebear.com/8.x/adventurer/svg?seed=Toby"
+]
+function fun1(){
+    let len=avatar.length
+    let random=Math.floor(Math.random() * (len+1));
+    return avatar[random];
+}
+
+if(password.length!=4){
+msg.style.color="red";
+}
+else{
+  msg.innerHTML="Success"
+  msg.style.color="rgb(7, 105, 7)";
+  let payload={
+    avatar:fun1(),
+    email,
+    password,
+    username
+  }
+
+  const request = new XMLHttpRequest();
+request.open("GET", "http://localhost:8000/alluser", false); // `false` makes the request synchronous
+request.send(null);
+if (request.status === 200) {
+ let data= JSON.parse(request.responseText);
+ data.map((ele)=>{
+  if(ele.username==username){
+    let albox=document.querySelector('#albox')
+  let close=document.querySelector('.close')
+  let al=setTimeout(()=>{
+albox.style.display="block"
+  },100)
+close.addEventListener('click',()=>{
+  albox.style.display="none"
+})
+bol123++
+  }
+ })
+}
+
+
+const play=async()=>{
+
+let response=await fetch('http://localhost:8000/signup',{
+
+  method:'POST',
+
+  headers:{
+
+    'Content-Type':'application/json',
+
+  },
+
+  body:JSON.stringify(payload)
+
+})
+const {token,msg,code}=await response.json()
+console.log(token,msg);
+document.cookie="token="+token
+
+console.log(msg);
+
+}
+// console.log();
+if(bol123==0){
+
+play()
+
+let subox=document.querySelector('#subox')
+
+let close1=document.querySelector('.close1')
+
+let al1=setTimeout(()=>{
+  process.classList.remove('d-none')
+subox.style.display="block"
+
+},100)
+
+
+close1.addEventListener('click',()=>{
+
+// close.
+
+subox.style.display="none"
+
+})
+setTimeout(()=>{
+  window.location.href = "../client/dashboard.html";
+},4000)
+
+}
+
+};
+
+
+
+}
+
+)
+
+</script>
+</body>
+</html>

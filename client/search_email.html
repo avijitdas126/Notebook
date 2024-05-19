@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstarp/bootstrap.min.css">
+    <link rel="shortcut icon" href="./uploads/draw.svg" type="image/x-icon">
+    <title>Forget Password</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="alert alert-danger m-3 d-none"    id="albox" role="alert">
+        Must be 4 characters long. <svg width="20" class="close" style="float: right;cursor: pointer;" height="20" viewBox="0 0 20 20"><path d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+      </div>
+    <div class="container p-4 bgai" id="toggle">
+        <form action="" >
+            <h2 class="text-center">Search UserName - Forget Password
+            </h2>
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">User name</label>
+              <input class="form-control" type="text" placeholder="UserName" aria-label="default input example" id="username" required>
+              </div>
+              <input type="submit" value="Submit" class="btn btn-primary mb-3" id="submit">
+              </form>
+              </div>
+              <div class="container p-4 bgai d-none"  id="toggle1">
+              <form action="" >
+                <h2 class="text-center">Set Password - Forget Password
+                </h2>
+                <div class="col-auto">
+                    <label for="inputPassword6" class="col-form-label">Password</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="password" id="inputPassword6"  class="form-control" aria-describedby="passwordHelpInline" required>
+                  </div>
+                  <div class="col-auto">
+                    <span id="passwordHelpInline" class="form-text">
+                      Must be 4 characters long.
+                    </span>
+                  </div>
+                  <input value="Submit" class="btn btn-primary mb-3" id="submit1">
+              </form>
+              </div>
+<script>
+let id=document.querySelector('#submit')
+let submit=document.querySelector('#submit1')
+let toggle=document.querySelector('#toggle')
+let toggle1=document.querySelector('#toggle1')
+let pass=document.querySelector("#inputPassword6")
+let alert=document.querySelector('#albox')
+id.addEventListener('click',(e)=>{
+    e.preventDefault()
+    let user=document.querySelector('#username').value;
+    async function postFetch(url = "", data = {}) {
+  try {
+    // Default options are marked with *
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      headers: {
+        "Content-Type": "application/json",
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data), // body data type must match "Content-Type" header
+    });
+    return response.json(); // parses JSON response into native JavaScript objects
+
+
+} catch (error) {
+    return "get a error! 👎";
+  }
+};
+let dat=postFetch('http://localhost:8000/search-user',{user})
+dat.then((dat1)=>{
+    // console.log(pass.value);
+    toggle.classList.add('d-none')
+    toggle1.classList.remove('d-none')
+    submit.addEventListener('click',(e)=>{
+e.preventDefault()
+    if(pass.value.length==4){
+let payload={
+        id:dat1.user_id,
+        password:pass.value
+    }
+let dat2=postFetch('http://localhost:8000/setpassword',payload)
+dat2.then((dat3)=>{
+    window.location.href='./login.html'
+})
+}
+else{
+alert.classList.remove('d-none')
+}
+})
+})
+})
+</script>   
+<script src="./bootstarp/bootstrap.bundle.min.js"></script>
+<script src="./bootstarp/popper.min.js"></script>             
+</body>
+</html>

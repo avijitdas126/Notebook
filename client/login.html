@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstarp/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/froala_editor.pkgd.min.css">
+    <link rel="shortcut icon" href="./uploads/draw.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/style.css" />
+    <title>Login Here</title>
+</head>
+<body>
+  <div class="alert alert-danger m-3 d-none"    id="albox" role="alert">
+    Wrong Input ! <svg width="20" class="close" style="float: right;cursor: pointer;" height="20" viewBox="0 0 20 20"><path d="M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+  </div>
+    <div class="container p-4 bgai">
+        <form action="">
+            <h2 class="text-center">Login</h2>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">User name</label>
+              <input class="form-control" type="text" id="username" placeholder="UserName" aria-label="default input example" required>
+              </div>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <label for="inputPassword6" class="col-form-label">Password</label>
+                </div>
+                <div class="col-auto">
+                  <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" required>
+                </div>
+                <div class="col-auto">
+                  <span id="passwordHelpInline" class="form-text">
+                    Must be 4 characters long.
+                  </span>
+                </div>
+<input type="submit" value="Submit" class="btn btn-primary mb-3" id="submit">
+<h6 class="text-center">Don't have an Account? <a href="./signup.html">Signup Here</a></h6>
+<h6 class="text-center">Forget Password? <a href="./search_email.html">Click Here</a></h6>
+</form>
+</div>
+    </div>
+    <script src="./js/jquery.min.js"></script>
+    <script src="./bootstarp/bootstrap.bundle.min.js"></script>
+    <script src="./bootstarp/popper.min.js"></script>
+<script>
+ // Function to retrieve a cookie by name
+ function getCookie(cookieName) {
+    // Split all cookies into an array
+    const cookies = document.cookie.split(';');
+
+    // Loop through each cookie
+    for (let i = 0; i < cookies.length; i++) {
+        // Split the cookie into name and value pairs
+        const cookie = cookies[i].trim().split('=');
+
+        // Check if the cookie name matches the provided name
+        if (cookie[0] === cookieName) {
+            // Return the cookie value
+            return decodeURIComponent(cookie[1]);
+        }
+    }
+
+    // Return null if cookie with provided name is not found
+    return null;
+}
+let msg=document.querySelector('#passwordHelpInline')
+let submit=document.querySelector('#submit')
+let albox=document.querySelector('#albox')
+submit.addEventListener('click',(e)=>{
+  e.preventDefault()
+let password=document.querySelector('#inputPassword6').value;
+let username=document.querySelector('#username').value
+if(password.length!=4){
+msg.style.color="red";
+}
+else{
+  msg.innerHTML="Success"
+  msg.style.color="rgb(7, 105, 7)";
+  let payload={
+    password,
+    username,
+    token:getCookie('token')
+  }
+const play=async()=>{
+    let response=await fetch('http://localhost:8000/login',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+      },
+      body:JSON.stringify(payload)
+    })
+    const {token,msg,code}=await response.json()
+    if(token!=null){
+      document.cookie="token="+token
+     window.location.href="./dashboard.html"
+    }
+    else{
+      //console.log(token);
+      albox.classList.remove('d-none')
+    }
+   
+  }
+play()
+}
+})
+</script>
+</body>
+</html>
